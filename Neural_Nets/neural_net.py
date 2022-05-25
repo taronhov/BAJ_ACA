@@ -1,4 +1,5 @@
 import numpy as np
+from sklearn.preprocessing import MinMaxScaler
 
 class TwoLayerNet(object):
     def __init__(self, input_size, hidden_size, output_size):
@@ -50,8 +51,8 @@ class TwoLayerNet(object):
         
         N = X.shape[0]
 
-        print (f"X shape[0]: {X.shape[0]}")
-        print (f"X shape; {X.shape}")
+        # print (f"X shape[0]: {X.shape[0]}")
+        # print (f"X shape; {X.shape}")
 
         '''
         START YOUR CODE HERE
@@ -74,9 +75,14 @@ class TwoLayerNet(object):
         if y is None:
             return scores
 
+        # data normalization with sklearn MinMaxScaler
+        scaler = MinMaxScaler()
+        # fit and transform in one step
+        normalized_scores = scaler.fit_transform(scores)
+
         # Second layer activation:
         # compute SoftMax probabilities
-        exp_scores = np.exp(scores)      # (N, C)
+        exp_scores = np.exp(normalized_scores)   # (N, C)
         # out = exp_scores / np.sum(exp_scores, axis=1).reshape(N, 1)
         out = exp_scores / np.sum(exp_scores, axis=1, keepdims=True)
     
@@ -153,7 +159,6 @@ class TwoLayerNet(object):
             '''
             # Compute loss and gradients using the current minibatch
             loss, grads = self.loss(X_batch, y=y_batch)
-            loss_history.append(loss)
 
             # update weights and biases
             '''
@@ -171,6 +176,8 @@ class TwoLayerNet(object):
 
             train_acc = (self.predict(X_batch) == y_batch).mean()
             val_acc = (self.predict(X_val) == y_val).mean()
+
+            loss_history.append(loss)
             train_acc_history.append(train_acc)
             val_acc_history.append(val_acc)
 
