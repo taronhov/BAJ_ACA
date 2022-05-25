@@ -92,7 +92,7 @@ class TwoLayerNet(object):
         reg_loss = 0.5 * reg * (np.sum(W1**2) + np.sum(W2**2))
         loss = data_loss + reg_loss
 
-        print(f"Loss values are: {loss}")
+        # print(f"Loss values are: {loss}")
         
 
         # Backward pass/Back propagation: compute gradients
@@ -116,7 +116,7 @@ class TwoLayerNet(object):
         grads['W2'] += reg * W2
         grads['W1'] += reg * W1
 
-        print(f"Grad values are: {grads}")
+        # print(f"Grad values are: {grads}")
     
         '''
         END YOUR CODE HERE
